@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">GitHubSearch</string>
+    <string name="search_hint">Search for repository...</string>
+    <string name="search_btn">Go</string>
+</resources>
