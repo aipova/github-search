@@ -19,6 +19,10 @@ public class ReposAdapter extends RecyclerView.Adapter<ReposAdapter.RepoViewHold
 
     List<RepoModel> repoModelList;
 
+    public void clear() {
+        repoModelList.clear();
+    }
+
     public class RepoViewHolder extends RecyclerView.ViewHolder {
         public TextView title, description;
         public RepoViewHolder(View itemView) {
@@ -38,6 +42,10 @@ public class ReposAdapter extends RecyclerView.Adapter<ReposAdapter.RepoViewHold
 
     public void setRepoModelList(List<RepoModel> repoModelList) {
         this.repoModelList = repoModelList;
+    }
+
+    public void addRepoModelsToList(List<RepoModel> repoModelList) {
+        this.repoModelList.addAll(repoModelList);
     }
 
     @Override

@@ -22,7 +22,14 @@ public class RepoDao {
     }
 
     public List<RepoModel> getSampleRepoModelsFromApi() throws IOException {
-        Response<RepoSearchResult> result = App.getGitHubApi().getRepositories("todolist", "stars", "desc").execute();
+        Response<RepoSearchResult> result = App.getGitHubApi()
+                .getRepositories("todolist", "stars", "desc", "1", "10").execute();
+        return result.body() != null && result.body().getItems() != null ? result.body().getItems() : Collections.<RepoModel>emptyList();
+    }
+
+    public List<RepoModel> getRepoModelsFromApi(String searchQuery, int page) throws IOException {
+        Response<RepoSearchResult> result = App.getGitHubApi()
+                .getRepositories(searchQuery, "stars", "desc", String.valueOf(page), "10").execute();
         return result.body() != null && result.body().getItems() != null ? result.body().getItems() : Collections.<RepoModel>emptyList();
     }
 }
