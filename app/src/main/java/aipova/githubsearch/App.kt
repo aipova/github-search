@@ -1,13 +1,10 @@
 package aipova.githubsearch
 
-import aipova.githubsearch.dao.GitHubApi
+import aipova.githubsearch.data.RepoDao
+import aipova.githubsearch.data.source.GitHubApi
 import android.app.Application
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-
-/**
- * Created by aipova on 09.02.17.
- */
 
 class App : Application() {
 
@@ -21,5 +18,6 @@ class App : Application() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         Injection.gitHubApi = retrofit.create(GitHubApi::class.java)
+        Injection.repoDao = RepoDao(Injection.gitHubApi)
     }
 }

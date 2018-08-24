@@ -1,36 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="aipova.githubsearch.MainActivity">
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                             xmlns:app="http://schemas.android.com/apk/res-auto"
+                                             xmlns:tools="http://schemas.android.com/tools"
+                                             android:id="@+id/activity_main"
+                                             android:layout_width="match_parent"
+                                             android:layout_height="match_parent"
+                                             android:paddingBottom="@dimen/activity_vertical_margin"
+                                             android:paddingLeft="@dimen/activity_horizontal_margin"
+                                             android:paddingRight="@dimen/activity_horizontal_margin"
+                                             android:paddingTop="@dimen/activity_vertical_margin"
+                                             tools:context="aipova.githubsearch.MainActivity">
 
     <EditText
-        android:id="@+id/search_text"
-        android:layout_width="wrap_content"
+        android:id="@+id/searchTxt"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:hint="@string/search_hint"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
+        app:layout_constraintEnd_toStartOf="@+id/searchBtn"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:inputType="text"/>
 
     <Button
-        android:id="@+id/search_btn"
+        android:id="@+id/searchBtn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
         android:text="@string/search_btn"
-        android:onClick="searchForRepo"/>
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintRight_toRightOf="parent"/>
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/repo_recycler_view"
+        android:id="@+id/repoRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/search_btn"
-        android:scrollbars="vertical"/>
-</RelativeLayout>
+        android:layout_height="0dp"
+        android:layout_marginBottom="8dp"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchTxt"/>
+</android.support.constraint.ConstraintLayout>
