@@ -1,23 +1,20 @@
 package aipova.githubsearch
 
-import aipova.githubsearch.data.Repo
-import aipova.githubsearch.data.RepoDao
+import aipova.githubsearch.data.RepoDataSource
 import android.content.Context
-import android.os.AsyncTask
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.inputmethod.InputMethodManager
+import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
-import java.io.IOException
 
 class MainActivity : AppCompatActivity() {
 
     private var reposAdapter = ReposAdapter(mutableListOf())
-    private var repoDao: RepoDao = Injection.repoDao
+    private var repoDataSource: RepoDataSource = Injection.repoDao
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,9 +50,15 @@ class MainActivity : AppCompatActivity() {
     private fun fetchData(page: Int = 1) {
         val searchString = searchTxt.text.toString()
         if (!searchString.isEmpty()) {
-            val getReposTask = GetReposTask()
-            getReposTask.execute(searchString, page.toString())
+            repoDataSource.searchRepos(searchString, page).subscribe({ result ->
+                reposAdapter.addRepoModelsToList(result.items)
+                reposAdapter.notifyDataSetChanged()
+            }, { onError() })
         }
+    }
+
+    private fun onError() {
+        Toast.makeText(this@MainActivity, "Cannot load repositories from GitHub", Toast.LENGTH_LONG).show()
     }
 
     private fun searchForRepos() {
@@ -67,28 +70,5 @@ class MainActivity : AppCompatActivity() {
     private fun hideKeyboard() {
         val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(currentFocus!!.windowToken, 0)
-    }
-
-    inner class GetReposTask : AsyncTask<String, Void, List<Repo>>() {
-        override fun doInBackground(vararg params: String): List<Repo>? {
-            try {
-                return repoDao.getRepoModelsFromApi(params[0], Integer.valueOf(params[1]))
-            } catch (apiException: IOException) {
-                Log.d(
-                    MainActivity::class.java.name,
-                    "Exception during api call: " + apiException.message
-                )
-            }
-
-            return null
-        }
-
-        override fun onPostExecute(repoModels: List<Repo>?) {
-            super.onPostExecute(repoModels)
-            if (repoModels != null) {
-                reposAdapter.addRepoModelsToList(repoModels)
-                reposAdapter.notifyDataSetChanged()
-            }
-        }
     }
 }
